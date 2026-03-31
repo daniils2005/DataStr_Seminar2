@@ -25,7 +25,7 @@ public class MyNode<Ttype> {
 		}
 	}
 
-	// nav jāveic not null pārbaudes, jo var būt gadījumi, ka ir null vērtība pirmajā vai pēdējā elementā
+	// nav jāveic not null pārbaudes, jo var būt gadījumi, ka ir null vērtība pirmajā vai pēdējā node
 	public void setNextNode(MyNode<Ttype> nextNode) {
 		this.nextNode = nextNode;
 	}
@@ -34,7 +34,7 @@ public class MyNode<Ttype> {
 		this.previousNode = previousNode;
 	}
 	
-	//bez argumenta konstruktors nav vajadzīgs, jo vienmēr lietotājam būs jānorāda elements
+	//bez argumenta konstruktors nav vajadzīgs, jo vienmēr lietotājam būs jānorāda sākuma elements
 	public MyNode(Ttype element) {
 		setElement(element);
 	}
