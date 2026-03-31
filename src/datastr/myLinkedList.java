@@ -1,6 +1,6 @@
 package datastr;
 
-public class myLinkedList<Ttype> {
+public class MyLinkedList<Ttype> {
 	private MyNode<Ttype> firstNode = null;
 	private MyNode<Ttype> lastNode = null;
 	private int howManyElements = 0;
