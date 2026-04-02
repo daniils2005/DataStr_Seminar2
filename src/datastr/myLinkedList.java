@@ -1,5 +1,7 @@
 package datastr;
 
+import java.util.ArrayList;
+
 public class MyLinkedList<Ttype> {
 	private MyNode<Ttype> firstNode = null;
 	private MyNode<Ttype> lastNode = null;
@@ -78,10 +80,89 @@ public class MyLinkedList<Ttype> {
 		} else if(position == howManyElements) {
 			add(element);
 		} else {
+			MyNode<Ttype> newNode = new MyNode<Ttype>(element);
+			MyNode<Ttype> currentNode = firstNode;
 			
+			for(int i = 1; i <= position-1; i++) {
+				currentNode = currentNode.getNextNode();
+			}
+			
+			MyNode<Ttype> leftNode = currentNode;
+			MyNode<Ttype> rightNode = leftNode.getNextNode();
+			
+			leftNode.setNextNode(newNode);
+			newNode.setPreviousNode(leftNode);
+			
+			rightNode.setPreviousNode(newNode);
+			newNode.setNextNode(rightNode);
+			
+			howManyElements++;
 		}
 	}
 	
+	public void remove(int position) throws Exception {
+		if(isEmpty()) {
+			throw new Exception("Saraksts ir tukšs");
+		}
+		if(position < 0 || position > howManyElements - 1) {
+			throw new Exception("Pozīcija neeksistē");
+		}
+		
+		MyNode<Ttype> currentNode = firstNode;
+		if(position == 0) {
+			firstNode = firstNode.getNextNode();
+			firstNode.getPreviousNode().setNextNode(null);
+			firstNode.setPreviousNode(null);
+		} else if(position == howManyElements - 1) {
+			lastNode = lastNode.getPreviousNode();
+			lastNode.getNextNode().setPreviousNode(null);
+			lastNode.setNextNode(null);
+		} else {
+			for(int i = 0; i < position; i++) {
+				currentNode = currentNode.getNextNode();
+			}
+			currentNode.getPreviousNode().setNextNode(currentNode.getNextNode());
+			currentNode.getNextNode().setPreviousNode(currentNode.getPreviousNode());
+			currentNode.setNextNode(null);
+			currentNode.setPreviousNode(null);
+		}
+		howManyElements--;
+	}
+	
+	public Ttype getByPosition(int position) throws Exception {
+		if(position < 0 || position > howManyElements - 1) {
+			throw new Exception("Pozīcija neeksistē");
+		}
+		if(position == 0) {
+			return firstNode.getElement();
+		} else if(position == howManyElements - 1) {
+			return lastNode.getElement();
+		}
+		MyNode<Ttype> currentNode = firstNode;
+		for(int i = 0; i < position; i++) {
+			currentNode = currentNode.getNextNode();
+		}
+		return currentNode.getElement();
+	}
+	
+	public ArrayList<Integer> searchElement(Ttype element) throws Exception {
+		if(isEmpty()) {
+			throw new Exception("Saraksts ir tukšs");
+		}
+		if(element == null) {
+			throw new Exception("Padotais elements nav norādīts");
+		}
+		ArrayList<Integer> indexes = new ArrayList<Integer>();
+		MyNode<Ttype> lastNode = firstNode;
+		for(int i = 0; i < howManyElements; i++) {
+			if(lastNode.getElement().equals(element)) {
+				indexes.add(i);
+			}
+			lastNode = lastNode.getNextNode();
+		}
+		return indexes;
+	}
+
 	
 	public void print() throws Exception {
 		if(isEmpty()) {
@@ -94,5 +175,13 @@ public class MyLinkedList<Ttype> {
 			System.out.print(currentNode.getElement() + " ");
 			currentNode = currentNode.getNextNode();
 		}
+		System.out.print("\n");
+	}
+	
+	public void makeEmpty() {
+		firstNode = null;
+		lastNode = null;
+		howManyElements = 0;
+		System.gc();
 	}
 }
